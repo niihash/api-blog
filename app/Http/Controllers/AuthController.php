@@ -55,4 +55,13 @@ class AuthController extends Controller
 
         return response()->noContent();
     }
+
+    public function me(Request $request)
+    {
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Credenciais Inválidas'], 401);
+        }
+
+        return new AuthResource(Auth::user());
+    }
 }
