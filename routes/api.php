@@ -13,7 +13,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/articles', [PublicArticleController::class, 'index']);
 Route::get('/articles/{article}', [PublicArticleController::class, 'show']);
 
-Route::middleware('auth_sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::apiResource('/me/articles', ArticleController::class);
 });
