@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class PublicArticleController extends Controller
     public function index()
     {
         $articles = Article::all();
-        return response()->json($articles);
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -29,7 +30,7 @@ class PublicArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return response()->json($article);
+        return new ArticleResource($article);
     }
 
     /**
