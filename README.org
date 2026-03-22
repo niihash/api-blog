@@ -33,6 +33,9 @@ Fluxo:
 
 * Endpoints
 
+Documentação do API com mais detalhes pode ser encontrado em http://localhost:8000/docs/api
+
+
 ** Auth
 
 *** POST /login
