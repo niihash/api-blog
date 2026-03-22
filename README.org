@@ -1,0 +1,187 @@
+#+TITLE: api-blog
+#+AUTHOR: niihash
+#+OPTIONS: toc:t
+
+* Descrição
+A *ui-blog API* é um backend desenvolvido com Laravel que fornece endpoints para autenticação de usuários e gerenciamento de artigos. A API segue um padrão REST e utiliza autenticação baseada em sessão com Laravel Sanctum.
+
+* Funcionalidades
+- Registro e autenticação de usuários
+- Gerenciamento de sessão (login/logout)
+- CRUD completo de artigos (privado)
+- Listagem e visualização pública de artigos
+- Proteção de rotas autenticadas
+
+* Tecnologias
+- Laravel
+- Laravel Sanctum
+- PHP
+- SQLite (ou outro banco compatível)
+
+* Base URL
+#+BEGIN_SRC
+http://localhost:8000/api
+#+END_SRC
+
+* Autenticação
+A autenticação é baseada em sessão via cookies utilizando Laravel Sanctum.
+
+Fluxo:
+1. Obter cookie CSRF
+2. Fazer login
+3. Requisições autenticadas usam automaticamente o cookie de sessão
+
+* Endpoints
+
+** Auth
+
+*** POST /login
+Realiza login do usuário.
+
+#+BEGIN_SRC json
+{
+  "email": "user@example.com",
+  "password": "password"
+}
+#+END_SRC
+
+*** POST /register
+Cria um novo usuário.
+
+#+BEGIN_SRC json
+{
+  "name": "User",
+  "email": "user@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+#+END_SRC
+
+*** POST /logout
+Encerra a sessão do usuário.
+
+*** GET /me
+Retorna os dados do usuário autenticado.
+
+---
+
+** Artigos (Privado)
+
+Requer autenticação.
+
+*** GET /me/articles
+Lista artigos do usuário autenticado.
+
+*** POST /me/articles
+Cria um novo artigo.
+
+#+BEGIN_SRC json
+{
+  "title": "Título do artigo",
+  "content": "Conteúdo do artigo"
+}
+#+END_SRC
+
+*** GET /me/articles/{id}
+Retorna um artigo específico.
+
+*** PUT /me/articles/{id}
+Atualiza um artigo.
+
+*** DELETE /me/articles/{id}
+Remove um artigo.
+
+---
+
+** Artigos (Público)
+
+*** GET /articles
+Lista todos os artigos públicos.
+
+*** GET /articles/{id}
+Retorna um artigo público.
+
+---
+
+* Estrutura de Resposta
+
+** ArticleResource
+#+BEGIN_SRC json
+{
+  "id": 1,
+  "title": "Título",
+  "content": "Conteúdo",
+  "user_id": 1,
+  "created_at": "2025-01-01T00:00:00Z",
+  "updated_at": "2025-01-01T00:00:00Z"
+}
+#+END_SRC
+
+** AuthResource
+#+BEGIN_SRC json
+{
+  "id": "1",
+  "name": "User",
+  "email": "user@example.com"
+}
+#+END_SRC
+
+---
+
+* Códigos de Erro
+
+- 401 :: Não autenticado
+- 403 :: Não autorizado
+- 404 :: Recurso não encontrado
+- 422 :: Erro de validação
+
+---
+
+* Instalação
+
+#+BEGIN_SRC bash
+git clone https://github.com/niihash/api-blog.git
+cd api-blog
+composer install
+cp .env.example .env
+#+END_SRC
+
+Adicione as seguintes variáveis no arquivo =.env=.
+
+#+BEGIN_SRC bash
+SESSION_DOMAIN=localhost
+SANCTUM_STATEFUL_DOMAINS=localhost:3000
+#+END_SRC
+
+Execute o seguinte comando no terminal para gerar as chaves
+
+#+BEGIN_SRC bash
+php artisan key:generate
+#+END_SRC
+
+Popular banco de dados com alguns usuários e artigos
+
+#+BEGIN_SRC bash
+php artisan db:seed --class=UserSeeder
+#+END_SRC
+
+---
+
+* Execução
+
+#+BEGIN_SRC bash
+php artisan serve
+#+END_SRC
+
+A API estará disponível em:
+http://localhost:8000
+
+---
+
+* Observações
+
+- As rotas sob =/me= requerem autenticação
+- A autenticação utiliza cookies (não tokens Bearer)
+- Ideal para uso com frontend separado (SPA)
+
+---
