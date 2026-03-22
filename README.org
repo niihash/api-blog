@@ -149,7 +149,7 @@ composer install
 cp .env.example .env
 #+END_SRC
 
-Adicione as seguintes variáveis no arquivo =.env=.
+Adicione as seguintes variáveis no arquivo =.env=. Configure as variáveis do banco de dados a ser utilizado (sqlite por default)
 
 #+BEGIN_SRC bash
 SESSION_DOMAIN=localhost
@@ -160,6 +160,12 @@ Execute o seguinte comando no terminal para gerar as chaves
 
 #+BEGIN_SRC bash
 php artisan key:generate
+#+END_SRC
+
+Crie o banco de dados e tabelas da aplicação:
+
+#+BEGIN_SRC bash
+php artisan migrate
 #+END_SRC
 
 Popular banco de dados com alguns usuários e artigos
