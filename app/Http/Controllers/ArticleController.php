@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -33,7 +34,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $this->authorize('view', $article);
+        Gate::authorize('view', $article);
 
         return new ArticleResource($article);
     }
@@ -43,7 +44,7 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        $this->authorize('update', $article);
+        Gate::authorize('update', $article);
         $article->update($request->validated());
         return new ArticleResource($article);
     }
@@ -53,7 +54,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        $this->authorize('delete', $article);
+        Gate::authorize('delete', $article);
         $article->delete();
         return response()->noContent();
     }
